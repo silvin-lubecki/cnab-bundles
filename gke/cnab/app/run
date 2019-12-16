@@ -40,9 +40,8 @@ case $action in
     terraform apply -auto-approve -var project_id=$project_id
 
     # show the result
-    echo "Show Terraform output"
-    terraform show
-    terraform output -json
+    mkdir outputs
+    terraform show -json > outputs/state.json
     ;;
 
     uninstall)

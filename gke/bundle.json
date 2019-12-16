@@ -49,5 +49,14 @@
             "env": "TERRAFORM_CLOUD_TOKEN"
         }
     },
+    "outputs": {
+        "state.json": {
+            "definition": "string",
+            "path": "/cnab/app/outputs/state.json",
+            "applyTo": [
+                "install"
+            ]
+        }
+    },
     "schemaVersion": "v1.0.0"
 }
