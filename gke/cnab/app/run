@@ -1,0 +1,29 @@
+#!/bin/sh
+
+action=$CNAB_ACTION
+name=$CNAB_INSTALLATION_NAME
+# parameters
+project_id=$GKE_PROJECT_ID
+
+case $action in
+    install)
+    echo "Install GKE on project" $project_id
+    # execute terraform
+    echo "Apply Terraform"
+    terraform apply -auto-approve -var project_id=$project_id
+    # show the result
+    echo "Show Terraform state"
+    terraform show
+    ;;
+    uninstall)
+    echo "Uninstall action"
+    ;;
+    upgrade)
+    echo "Nothing to upgrade"
+    ;;
+    *)
+    echo "Failure: unknown action $action"
+    exit 1
+    ;;
+esac
+echo "Action $action complete for $name"

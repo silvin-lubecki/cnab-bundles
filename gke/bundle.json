@@ -1,0 +1,37 @@
+{
+    "name": "gke",
+    "version": "0.1.0",
+    "description": "Install an GKE running terraform scripts",
+    "maintainers": [
+        {
+            "name": "Silvin Lubecki",
+            "email": "silvin.lubecki@docker.com"
+        }
+    ],
+    "invocationImages": [
+        {
+            "imageType": "docker",
+            "image": "gke-cnab:0.1.0-invoc"
+        }
+    ],
+    "definitions": {
+        "project": {
+            "title": "GCP Project ID",
+            "type": "string"
+        }
+    },
+    "parameters": {
+        "project": {
+            "definition": "project",
+            "destination": {
+                "env": "GKE_PROJECT_ID"
+            }
+        }
+    },
+    "credentials": {
+        "gcp-service-account": {
+            "path": "/cnab/app/gcp-service-account.json"
+        }
+    },
+    "schemaVersion": "v1.0.0"
+}
