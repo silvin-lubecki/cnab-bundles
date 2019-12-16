@@ -15,22 +15,38 @@
         }
     ],
     "definitions": {
-        "project": {
-            "title": "GCP Project ID",
+        "string": {
             "type": "string"
         }
     },
     "parameters": {
-        "project": {
-            "definition": "project",
+        "gke-project-id": {
+            "definition": "string",
             "destination": {
                 "env": "GKE_PROJECT_ID"
+            }
+        },
+        "terraform-cloud-organization": {
+            "definition": "string",
+            "destination": {
+                "env": "TERRAFORM_CLOUD_ORGANIZATION"
+            }
+        },
+        "terraform-cloud-workspace": {
+            "definition": "string",
+            "destination": {
+                "env": "TERRAFORM_CLOUD_WORKSPACE"
             }
         }
     },
     "credentials": {
         "gcp-service-account": {
+            "description": "Google Cloud Service Account JSON file",
             "path": "/cnab/app/gcp-service-account.json"
+        },
+        "terraform-cloud-token": {
+            "description": "Token for terraform cloud to store terraform state",
+            "env": "TERRAFORM_CLOUD_TOKEN"
         }
     },
     "schemaVersion": "v1.0.0"

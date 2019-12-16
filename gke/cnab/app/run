@@ -2,22 +2,60 @@
 
 action=$CNAB_ACTION
 name=$CNAB_INSTALLATION_NAME
+
 # parameters
 project_id=$GKE_PROJECT_ID
+terraform_cloud_token=$TERRAFORM_CLOUD_TOKEN
+terraform_cloud_organization=$TERRAFORM_CLOUD_ORGANIZATION
+terraform_cloud_workspace=$TERRAFORM_CLOUD_WORKSPACE
+
+# initialize Auth token file
+cat << EOF > ~/.terraformrc
+credentials "app.terraform.io" {
+  token = "$terraform_cloud_token"
+}
+EOF
+
+# initialize backend configuration
+cat << EOF > backend.tf
+terraform {
+    backend "remote" {
+        organization = "$terraform_cloud_organization"
+
+        workspaces {
+            name = "$terraform_cloud_workspace"
+        }
+    }
+}
+EOF
 
 case $action in
     install)
+    # initialize terraform with cloud backend token
+    echo "Initializing terraform"
+    terraform init -input=false -backend=true -reconfigure
     echo "Install GKE on project" $project_id
     # execute terraform
     echo "Apply Terraform"
     terraform apply -auto-approve -var project_id=$project_id
+
     # show the result
+    echo "Show Terraform output"
+    terraform show
+    terraform output -json
+    ;;
+
+    uninstall)
+    cat ~/.terraformrc
+    # initialize terraform with cloud backend token
+    echo "Initializing terraform"
+    terraform init
+    echo "Destroying GKE on project" $project_id
+    terraform destroy -auto-approve -var project_id=$project_id
     echo "Show Terraform state"
     terraform show
     ;;
-    uninstall)
-    echo "Uninstall action"
-    ;;
+
     upgrade)
     echo "Nothing to upgrade"
     ;;
